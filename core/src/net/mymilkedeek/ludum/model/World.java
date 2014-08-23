@@ -143,6 +143,10 @@ public class World extends Actor {
     public void connect(World otherworld) {
         if ( !connectedWorlds.contains(otherworld) ) {
             connectedWorlds.add(otherworld);
+            otherworld.connectedWorlds.add(this);
+        } else {
+            connectedWorlds.remove(otherworld);
+            otherworld.connectedWorlds.remove(this);
         }
     }
 }
