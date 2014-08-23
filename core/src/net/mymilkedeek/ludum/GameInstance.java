@@ -1,6 +1,7 @@
 package net.mymilkedeek.ludum;
 
 import com.badlogic.gdx.Game;
+import net.mymilkedeek.ludum.screens.GameScreen;
 import net.mymilkedeek.ludum.screens.IntroScreen;
 
 /**
@@ -9,6 +10,6 @@ import net.mymilkedeek.ludum.screens.IntroScreen;
 public class GameInstance extends Game {
     @Override
     public void create() {
-        setScreen(new IntroScreen());
+        setScreen(new GameScreen());
     }
 }
