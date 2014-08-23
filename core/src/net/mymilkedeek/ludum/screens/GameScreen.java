@@ -35,16 +35,13 @@ public class GameScreen implements Screen {
             List<World> worlds = new ArrayList<World>();
             List<String> e = new ArrayList<String>();
             e.add("food");
-            List<String> s = new ArrayList<String>();
-            s.add("tourism");
-            World world = new World(e, s);
+            World world = new World(e);
             world.setLocation(250f, 250f, 50f);
             worlds.add(world);
 
             e = new ArrayList<String>();
-            e.add("tourism");
-            s = new ArrayList<String>();
-            world = new World(e, s);
+            e.add("food");
+            world = new World(e);
             world.setLocation(500f, 250, 50f);
             worlds.add(world);
             currentLevel = new Level(1, worlds);

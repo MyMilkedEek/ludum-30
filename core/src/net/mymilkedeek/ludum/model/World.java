@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import net.mymilkedeek.ludum.listener.WorldInputListener;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.List;
 public class World extends Actor {
 
     private List<String> excesses;
-    private List<String> shortages;
+    private List<String> bonuses;
     private String showResourcesString = "";
     private WorldInputListener inputListener;
 
@@ -32,29 +31,14 @@ public class World extends Actor {
     private BitmapFont font;
 
 
-    public World(List<String> excesses, List<String> shortages) {
+    public World(List<String> excesses) {
         this.excesses = excesses;
-        this.shortages = shortages;
 
         if (excesses == null) {
             excesses = new ArrayList<String>();
         }
 
-        if (shortages == null) {
-            shortages = new ArrayList<String>();
-        }
-
-        for ( String s : excesses ) {
-            showResourcesString += "+" + s + " ";
-        }
-
-        if ( !shortages.isEmpty() ) {
-            showResourcesString += "\n";
-        }
-
-        for ( String s : shortages ) {
-            showResourcesString += "-" + s + " ";
-        }
+        rebuildVisualString();
 
         // todo rendering
         shapeRenderer = new ShapeRenderer();
@@ -67,14 +51,15 @@ public class World extends Actor {
         displayResources = false;
 
         connectedWorlds = new ArrayList<World>();
+        bonuses = new ArrayList<String>();
     }
 
     public List<String> getExcesses() {
         return excesses;
     }
 
-    public List<String> getShortages() {
-        return shortages;
+    public List<String> getBonuses() {
+        return bonuses;
     }
 
     public float getRadius() {
@@ -88,15 +73,15 @@ public class World extends Actor {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(getColor());
-        shapeRenderer.circle(getX()+radius, getY()+radius, radius);
+        shapeRenderer.circle(getX() + radius, getY() + radius, radius);
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
 
-        for ( World otherWorld : connectedWorlds ) {
-            shapeRenderer.line(getX()+radius, getY()+radius, otherWorld.getX()+otherWorld.radius, otherWorld.getY()+otherWorld.radius);
+        for (World otherWorld : connectedWorlds) {
+            shapeRenderer.line(getX() + radius, getY() + radius, otherWorld.getX() + otherWorld.radius, otherWorld.getY() + otherWorld.radius);
         }
 
         shapeRenderer.end();
@@ -105,10 +90,10 @@ public class World extends Actor {
             renderAvailableResources(batch, shapeRenderer);
         }
 
-        if ( inputListener.isDragging() ) {
+        if (inputListener.isDragging()) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.line(getX()+radius, getY()+radius, inputListener.getLastDraggedPosition().x, inputListener.getLastDraggedPosition().y);
+            shapeRenderer.line(getX() + radius, getY() + radius, inputListener.getLastDraggedPosition().x, inputListener.getLastDraggedPosition().y);
             shapeRenderer.end();
         }
 
@@ -120,19 +105,19 @@ public class World extends Actor {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.GRAY);
-        shapeRenderer.rect(getX() + radius, (float) (getY() + radius + (radius *1.25)), bounds.width, bounds.height + 2);
+        shapeRenderer.rect(getX() + radius, (float) (getY() + radius + (radius * 1.25)), bounds.width, bounds.height + 2);
         shapeRenderer.end();
 
         batch.begin();
 
         font.setColor(Color.WHITE);
-        font.draw(batch, showResourcesString, getX() + radius, (float) (getY() + radius + (radius *1.25) + bounds.height));
+        font.draw(batch, showResourcesString, getX() + radius, (float) (getY() + radius + (radius * 1.25) + bounds.height));
 
         batch.end();
     }
 
     public void setLocation(float x, float y, float radius) {
-        setBounds(x - radius, y - radius, radius*2, radius*2);
+        setBounds(x - radius, y - radius, radius * 2, radius * 2);
         this.radius = radius;
     }
 
@@ -141,12 +126,42 @@ public class World extends Actor {
     }
 
     public void connect(World otherworld) {
-        if ( !connectedWorlds.contains(otherworld) ) {
+        if (!connectedWorlds.contains(otherworld) && !otherworld.connectedWorlds.contains(this)) {
             connectedWorlds.add(otherworld);
-            otherworld.connectedWorlds.add(this);
+
+            for (String excess : excesses) {
+                String addResource = ResourceProcessor.addResource(excess, otherworld);
+
+                if (addResource != null) {
+                    otherworld.getBonuses().add(addResource);
+                    rebuildVisualString();
+                    otherworld.rebuildVisualString();
+                }
+            }
         } else {
             connectedWorlds.remove(otherworld);
             otherworld.connectedWorlds.remove(this);
+
+            for (String excess : excesses) {
+                if (ResourceProcessor.removeResource(excess, otherworld)) {
+                    rebuildVisualString();
+                }
+            }
+        }
+    }
+
+    private void rebuildVisualString() {
+        showResourcesString = "";
+
+        for (String s : excesses) {
+            showResourcesString += "+" + s + " ";
+        }
+
+        if (bonuses == null) {
+            bonuses = new ArrayList<String>();
+        }
+        for (String b : bonuses) {
+            showResourcesString += "*" + b + " ";
         }
     }
 }
