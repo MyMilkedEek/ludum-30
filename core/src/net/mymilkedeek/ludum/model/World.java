@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import net.mymilkedeek.ludum.listener.WorldInputListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,8 @@ public class World extends Actor {
         // todo rendering
         shapeRenderer = new ShapeRenderer();
         setColor(Color.BLUE);
+
+        addListener(new WorldInputListener());
     }
 
     public List<String> getExcesses() {

@@ -1,5 +1,6 @@
 package net.mymilkedeek.ludum.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public class Level {
         for ( World world : worlds ) {
             stage.addActor(world);
         }
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     public void render(float delta) {

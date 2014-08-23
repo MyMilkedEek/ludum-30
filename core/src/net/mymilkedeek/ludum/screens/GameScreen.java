@@ -35,6 +35,8 @@ public class GameScreen implements Screen {
             World world = new World(null, null);
             world.setX(50f);
             world.setY(50f);
+
+            world.setBounds(50,50,50,50); // todo improve bounds selection
             worlds.add(world);
             currentLevel = new Level(1, worlds);
         }
