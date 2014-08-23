@@ -40,6 +40,13 @@ public class GameScreen implements Screen {
             World world = new World(e, s);
             world.setLocation(250f, 250f, 50f);
             worlds.add(world);
+
+            e = new ArrayList<String>();
+            e.add("tourism");
+            s = new ArrayList<String>();
+            world = new World(e, s);
+            world.setLocation(500f, 250, 50f);
+            worlds.add(world);
             currentLevel = new Level(1, worlds);
         }
     }

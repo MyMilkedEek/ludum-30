@@ -20,6 +20,7 @@ public class World extends Actor {
     private List<String> excesses;
     private List<String> shortages;
     private String showResourcesString = "";
+    private WorldInputListener inputListener;
 
     private boolean displayResources;
     private float radius;
@@ -58,7 +59,8 @@ public class World extends Actor {
         font = new BitmapFont(Gdx.files.internal("font/font.fnt"));
         setColor(Color.BLUE);
 
-        addListener(new WorldInputListener(this));
+        inputListener = new WorldInputListener(this);
+        addListener(inputListener);
 
         displayResources = false;
     }
@@ -69,6 +71,10 @@ public class World extends Actor {
 
     public List<String> getShortages() {
         return shortages;
+    }
+
+    public float getRadius() {
+        return radius;
     }
 
     @Override
@@ -88,6 +94,13 @@ public class World extends Actor {
 
         if (displayResources) {
             renderAvailableResources(batch, shapeRenderer);
+        }
+
+        if ( inputListener.isDragging() ) {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.WHITE);
+            shapeRenderer.line(getX()+radius, getY()+radius, inputListener.getLastDraggedPosition().x, inputListener.getLastDraggedPosition().y);
+            shapeRenderer.end();
         }
 
         batch.begin();
