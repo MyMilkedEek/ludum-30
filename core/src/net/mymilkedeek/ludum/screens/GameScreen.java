@@ -47,7 +47,7 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         if ( currentLevel == null ) {
-            currentLevel = LevelLoader.loadLevel(1);
+            currentLevel = LevelLoader.loadLevel(3);
         }
     }
 
