@@ -57,14 +57,13 @@ public class WorldInputListener extends InputListener {
                 System.out.println(x + " " + actor.getX());
                 if ( x > actor.getX() && x < actor.getX() + actor.getWidth() ) {
                     if ( y > actor.getY() && y < actor.getY() + actor.getHeight() ) {
-                        System.out.println("HIT!");
+                        world.connect((World)actor);
                     }
                 }
             }
         }
 
         dragging = false;
-
     }
 
     public boolean isDragging() {

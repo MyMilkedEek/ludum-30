@@ -22,6 +22,8 @@ public class World extends Actor {
     private String showResourcesString = "";
     private WorldInputListener inputListener;
 
+    private List<World> connectedWorlds;
+
     private boolean displayResources;
     private float radius;
 
@@ -63,6 +65,8 @@ public class World extends Actor {
         addListener(inputListener);
 
         displayResources = false;
+
+        connectedWorlds = new ArrayList<World>();
     }
 
     public List<String> getExcesses() {
@@ -90,6 +94,11 @@ public class World extends Actor {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
+
+        for ( World otherWorld : connectedWorlds ) {
+            shapeRenderer.line(getX()+radius, getY()+radius, otherWorld.getX()+otherWorld.radius, otherWorld.getY()+otherWorld.radius);
+        }
+
         shapeRenderer.end();
 
         if (displayResources) {
@@ -129,5 +138,11 @@ public class World extends Actor {
 
     public void displayResourcesView() {
         displayResources = !displayResources;
+    }
+
+    public void connect(World otherworld) {
+        if ( !connectedWorlds.contains(otherworld) ) {
+            connectedWorlds.add(otherworld);
+        }
     }
 }
