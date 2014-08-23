@@ -20,6 +20,7 @@ public class World extends Actor {
 
     // todo improve rendering
     private ShapeRenderer shapeRenderer;
+    private float radius;
 
     public World(List<String> excesses, List<String> shortages) {
         this.excesses = excesses;
@@ -55,9 +56,19 @@ public class World extends Actor {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(getColor());
-        shapeRenderer.circle(getX(), getY(), 50);
+        shapeRenderer.circle(getX()+radius, getY()+radius, radius);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
         shapeRenderer.end();
 
         batch.begin();
+    }
+
+    public void setLocation(float x, float y, float radius) {
+        setBounds(x - radius, y - radius, radius*2, radius*2);
+        this.radius = radius;
     }
 }

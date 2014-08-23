@@ -33,10 +33,7 @@ public class GameScreen implements Screen {
         if ( currentLevel == null ) {
             List<World> worlds = new ArrayList<World>();
             World world = new World(null, null);
-            world.setX(50f);
-            world.setY(50f);
-
-            world.setBounds(50,50,50,50); // todo improve bounds selection
+            world.setLocation(250f, 250f, 50f);
             worlds.add(world);
             currentLevel = new Level(1, worlds);
         }
