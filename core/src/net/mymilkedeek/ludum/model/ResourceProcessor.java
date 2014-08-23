@@ -20,6 +20,7 @@ public class ResourceProcessor {
 
         if (addedResource != null ) {
             worldToRemoveResourceFrom.getBonuses().remove(addedResource);
+            worldToRemoveResourceFrom.rebuildVisualString();
             return true;
         }
 

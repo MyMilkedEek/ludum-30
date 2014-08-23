@@ -31,4 +31,8 @@ public class Level {
         stage.act(delta);
         stage.draw();
     }
+
+    public List<World> getWorlds() {
+        return worldList;
+    }
 }

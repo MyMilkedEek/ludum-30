@@ -26,12 +26,14 @@ public class World extends Actor {
     private boolean displayResources;
     private float radius;
 
+    private List<String> goals;
+
     // todo improve rendering
     private ShapeRenderer shapeRenderer;
     private BitmapFont font;
 
 
-    public World(List<String> excesses) {
+    public World(List<String> excesses, List<String> goals) {
         this.excesses = excesses;
 
         if (excesses == null) {
@@ -52,6 +54,8 @@ public class World extends Actor {
 
         connectedWorlds = new ArrayList<World>();
         bonuses = new ArrayList<String>();
+
+        this.goals = goals;
     }
 
     public List<String> getExcesses() {
@@ -150,7 +154,7 @@ public class World extends Actor {
         }
     }
 
-    private void rebuildVisualString() {
+    public void rebuildVisualString() {
         showResourcesString = "";
 
         for (String s : excesses) {
@@ -163,5 +167,12 @@ public class World extends Actor {
         for (String b : bonuses) {
             showResourcesString += "*" + b + " ";
         }
+    }
+
+    public boolean planetCompleted() {
+        if ( bonuses == null ) {
+            bonuses = new ArrayList<String>();
+        }
+        return bonuses.containsAll(goals);
     }
 }

@@ -22,6 +22,20 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         currentLevel.render(delta);
+
+        boolean completed = true;
+
+        for ( World world : currentLevel.getWorlds() ) {
+            if ( !world.planetCompleted() ) {
+                completed = false;
+                break;
+            }
+        }
+
+        if ( completed ) {
+            System.out.println("Hooray!");
+            Gdx.app.exit();
+        }
     }
 
     @Override
@@ -35,13 +49,15 @@ public class GameScreen implements Screen {
             List<World> worlds = new ArrayList<World>();
             List<String> e = new ArrayList<String>();
             e.add("food");
-            World world = new World(e);
+            List<String> goals = new ArrayList<String>();
+            goals.add("gluttony");
+            World world = new World(e, goals);
             world.setLocation(250f, 250f, 50f);
             worlds.add(world);
 
             e = new ArrayList<String>();
             e.add("food");
-            world = new World(e);
+            world = new World(e, new ArrayList<String>());
             world.setLocation(500f, 250, 50f);
             worlds.add(world);
             currentLevel = new Level(1, worlds);
