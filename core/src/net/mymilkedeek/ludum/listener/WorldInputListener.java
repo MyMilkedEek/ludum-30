@@ -54,7 +54,6 @@ public class WorldInputListener extends InputListener {
 
         for ( Actor actor : actors ) {
             if ( actor != world ) {
-                System.out.println(x + " " + actor.getX());
                 if ( x > actor.getX() && x < actor.getX() + actor.getWidth() ) {
                     if ( y > actor.getY() && y < actor.getY() + actor.getHeight() ) {
                         world.connect((World)actor);

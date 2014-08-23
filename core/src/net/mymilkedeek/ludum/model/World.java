@@ -90,9 +90,7 @@ public class World extends Actor {
 
         shapeRenderer.end();
 
-        if (displayResources) {
-            renderAvailableResources(batch, shapeRenderer);
-        }
+        renderAvailableResources(batch, shapeRenderer);
 
         if (inputListener.isDragging()) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -121,6 +119,8 @@ public class World extends Actor {
     }
 
     public void setLocation(float x, float y, float radius) {
+        x = Gdx.graphics.getWidth() * x;
+        y = Gdx.graphics.getHeight() * y;
         setBounds(x - radius, y - radius, radius * 2, radius * 2);
         this.radius = radius;
     }
