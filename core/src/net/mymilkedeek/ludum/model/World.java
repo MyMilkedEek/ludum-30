@@ -1,7 +1,9 @@
 package net.mymilkedeek.ludum.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -17,10 +19,15 @@ public class World extends Actor {
 
     private List<String> excesses;
     private List<String> shortages;
+    private String showResourcesString = "";
+
+    private boolean displayResources;
+    private float radius;
 
     // todo improve rendering
     private ShapeRenderer shapeRenderer;
-    private float radius;
+    private BitmapFont font;
+
 
     public World(List<String> excesses, List<String> shortages) {
         this.excesses = excesses;
@@ -34,11 +41,26 @@ public class World extends Actor {
             shortages = new ArrayList<String>();
         }
 
+        for ( String s : excesses ) {
+            showResourcesString += "+" + s + " ";
+        }
+
+        if ( !shortages.isEmpty() ) {
+            showResourcesString += "\n";
+        }
+
+        for ( String s : shortages ) {
+            showResourcesString += "-" + s + " ";
+        }
+
         // todo rendering
         shapeRenderer = new ShapeRenderer();
+        font = new BitmapFont(Gdx.files.internal("font/font.fnt"));
         setColor(Color.BLUE);
 
-        addListener(new WorldInputListener());
+        addListener(new WorldInputListener(this));
+
+        displayResources = false;
     }
 
     public List<String> getExcesses() {
@@ -64,11 +86,35 @@ public class World extends Actor {
         shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
         shapeRenderer.end();
 
+        if (displayResources) {
+            renderAvailableResources(batch, shapeRenderer);
+        }
+
         batch.begin();
+    }
+
+    private void renderAvailableResources(Batch batch, ShapeRenderer shapeRenderer) {
+        BitmapFont.TextBounds bounds = font.getBounds(showResourcesString);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.GRAY);
+        shapeRenderer.rect(getX() + radius, (float) (getY() + radius + (radius *1.25)), bounds.width, bounds.height + 2);
+        shapeRenderer.end();
+
+        batch.begin();
+
+        font.setColor(Color.WHITE);
+        font.draw(batch, showResourcesString, getX() + radius, (float) (getY() + radius + (radius *1.25) + bounds.height));
+
+        batch.end();
     }
 
     public void setLocation(float x, float y, float radius) {
         setBounds(x - radius, y - radius, radius*2, radius*2);
         this.radius = radius;
+    }
+
+    public void displayResourcesView() {
+        displayResources = !displayResources;
     }
 }

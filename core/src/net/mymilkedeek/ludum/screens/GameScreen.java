@@ -18,6 +18,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         currentLevel.render(delta);
@@ -32,7 +33,11 @@ public class GameScreen implements Screen {
     public void show() {
         if ( currentLevel == null ) {
             List<World> worlds = new ArrayList<World>();
-            World world = new World(null, null);
+            List<String> e = new ArrayList<String>();
+            e.add("food");
+            List<String> s = new ArrayList<String>();
+            s.add("tourism");
+            World world = new World(e, s);
             world.setLocation(250f, 250f, 50f);
             worlds.add(world);
             currentLevel = new Level(1, worlds);
