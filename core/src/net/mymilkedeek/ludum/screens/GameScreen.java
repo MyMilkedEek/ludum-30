@@ -34,8 +34,17 @@ public class GameScreen implements Screen {
         }
 
         if ( completed ) {
-            System.out.println("Hooray!");
-            Gdx.app.exit();
+            Level newCurrentLevel = LevelLoader.loadLevel(currentLevel.getLevelNumber() + 1);
+
+            if ( newCurrentLevel == null ) {
+                currentLevel.dispose();
+                currentLevel = null;
+                System.out.println("Hooray!");
+                Gdx.app.exit();
+            } else {
+                // display menu
+                currentLevel = newCurrentLevel;
+            }
         }
     }
 
@@ -47,7 +56,7 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         if ( currentLevel == null ) {
-            currentLevel = LevelLoader.loadLevel(3);
+            currentLevel = LevelLoader.loadLevel(1);
         }
     }
 

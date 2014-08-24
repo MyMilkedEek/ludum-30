@@ -23,7 +23,9 @@ public class WorldInputListener extends InputListener {
 
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        world.displayResourcesView();
+        if ( world.needsClick()) {
+            world.getBonuses().add("click");
+        }
         return true;
     }
 

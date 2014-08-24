@@ -35,4 +35,12 @@ public class Level {
     public List<World> getWorlds() {
         return worldList;
     }
+
+    public int getLevelNumber() {
+        return levelNumber;
+    }
+
+    public void dispose() {
+        stage.dispose();
+    }
 }

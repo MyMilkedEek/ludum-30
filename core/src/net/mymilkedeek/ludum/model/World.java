@@ -25,6 +25,7 @@ public class World extends Actor {
 
     private boolean displayResources;
     private float radius;
+    private boolean needsClick;
 
     private List<String> goals;
 
@@ -56,6 +57,9 @@ public class World extends Actor {
         bonuses = new ArrayList<String>();
 
         this.goals = goals;
+        if ( goals.contains("click")) {
+            needsClick = true;
+        }
     }
 
     public List<String> getExcesses() {
@@ -174,5 +178,9 @@ public class World extends Actor {
             bonuses = new ArrayList<String>();
         }
         return bonuses.containsAll(goals);
+    }
+
+    public boolean needsClick() {
+        return needsClick;
     }
 }
