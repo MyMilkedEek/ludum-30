@@ -89,8 +89,6 @@ public class World extends Actor {
         batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
 
         for (World otherWorld : connectedWorlds) {
             shapeRenderer.line(getX() + radius, getY() + radius, otherWorld.getX() + otherWorld.radius, otherWorld.getY() + otherWorld.radius);

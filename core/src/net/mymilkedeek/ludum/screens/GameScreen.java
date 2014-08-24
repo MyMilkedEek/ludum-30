@@ -1,18 +1,15 @@
 package net.mymilkedeek.ludum.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import net.mymilkedeek.ludum.io.LevelLoader;
 import net.mymilkedeek.ludum.model.Level;
 import net.mymilkedeek.ludum.model.World;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author MyMilkedEek
@@ -22,6 +19,12 @@ public class GameScreen implements Screen {
     private Level currentLevel;
     private Texture background;
     private SpriteBatch batch;
+    private int startLevel;
+
+
+    public GameScreen(int level) {
+        startLevel = level;
+    }
 
     @Override
     public void render(float delta) {
@@ -65,7 +68,7 @@ public class GameScreen implements Screen {
                     currentLevel = newCurrentLevel;
                 }
             } else if ( currentLevel.isMainMenu()) {
-                // TODO set to main menu
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
             }
         }
     }
@@ -78,7 +81,7 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         if ( currentLevel == null ) {
-            currentLevel = LevelLoader.loadLevel(1);
+            currentLevel = LevelLoader.loadLevel(startLevel);
         }
 
         background = new Texture("world/background.png");

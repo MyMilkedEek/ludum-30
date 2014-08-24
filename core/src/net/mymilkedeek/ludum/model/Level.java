@@ -67,7 +67,11 @@ public class Level {
         stage.addActor(mainButton);
 
         if ( table != null ) {
-            table.setBounds(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getHeight() * 0.8f, Gdx.graphics.getWidth()*0.2f * 3, Gdx.graphics.getHeight() * 0.8f / 4);
+            float height = Gdx.graphics.getHeight() * 0.8f;
+            if ( levelNumber == 2 ) {
+                height -= 50f;
+            }
+            table.setBounds(Gdx.graphics.getWidth()*0.2f, height, Gdx.graphics.getWidth()*0.2f * 3, Gdx.graphics.getHeight() * 0.8f / 4);
             stage.addActor(table);
         }
 
