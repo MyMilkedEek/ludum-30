@@ -57,8 +57,7 @@ public class MainMenuScreen implements Screen {
         gameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO check preferences
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(10));//Progress.load() + 1));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(Progress.load() + 1));
             }
         });
         levelSelectButton = new TextButton("Select a Level", uiSkin);

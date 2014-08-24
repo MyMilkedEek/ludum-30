@@ -9,7 +9,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 public class DesktopStarter {
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "Ludum Swear 30";
+        cfg.title = "Planets in the scale";
         cfg.width = 800;
         cfg.height = 480;
         new LwjglApplication(new GameInstance(), cfg);
