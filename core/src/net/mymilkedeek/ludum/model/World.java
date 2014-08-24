@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import net.mymilkedeek.ludum.io.ImageDictionary;
 import net.mymilkedeek.ludum.listener.WorldInputListener;
 
@@ -86,11 +87,6 @@ public class World extends Actor {
         super.draw(batch, parentAlpha);
         batch.draw(worldImg, getX(), getY());
         batch.end();
-
-        /*shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(getColor());
-        shapeRenderer.circle(getX() + radius, getY() + radius, radius);
-        shapeRenderer.end();*/
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);

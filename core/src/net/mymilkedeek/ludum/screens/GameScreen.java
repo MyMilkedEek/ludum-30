@@ -3,6 +3,8 @@ package net.mymilkedeek.ludum.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import net.mymilkedeek.ludum.io.LevelLoader;
@@ -18,11 +20,17 @@ import java.util.List;
 public class GameScreen implements Screen {
 
     private Level currentLevel;
+    private Texture background;
+    private SpriteBatch batch;
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.begin();
+        batch.draw(background, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
 
         currentLevel.render(delta);
 
@@ -72,6 +80,10 @@ public class GameScreen implements Screen {
         if ( currentLevel == null ) {
             currentLevel = LevelLoader.loadLevel(1);
         }
+
+        background = new Texture("world/background.png");
+        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        batch = new SpriteBatch();
     }
 
     @Override

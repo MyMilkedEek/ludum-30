@@ -8,7 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -28,7 +30,7 @@ public class Level {
     private boolean nextLevel;
     private boolean mainMenu = false;
 
-    public Level(int levelNumber, List<World> worlds) {
+    public Level(int levelNumber, List<World> worlds, Table table) {
         this.worldList = worlds;
         this.levelNumber = levelNumber;
         nextLevel = false;
@@ -63,6 +65,11 @@ public class Level {
 
         stage.addActor(nextButton);
         stage.addActor(mainButton);
+
+        if ( table != null ) {
+            table.setBounds(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getHeight() * 0.8f, Gdx.graphics.getWidth()*0.2f * 3, Gdx.graphics.getHeight() * 0.8f / 4);
+            stage.addActor(table);
+        }
 
         Gdx.input.setInputProcessor(stage);
 
@@ -101,5 +108,9 @@ public class Level {
 
         nextButton.setVisible(true);
         mainButton.setVisible(true);
+    }
+
+    public void setTutorial(Table table) {
+        stage.addActor(table);
     }
 }
