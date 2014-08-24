@@ -55,7 +55,7 @@ public class WorldInputListener extends InputListener {
         y += world.getY();
 
         for ( Actor actor : actors ) {
-            if ( actor != world ) {
+            if ( actor != world && actor instanceof World) {
                 if ( x > actor.getX() && x < actor.getX() + actor.getWidth() ) {
                     if ( y > actor.getY() && y < actor.getY() + actor.getHeight() ) {
                         world.connect((World)actor);

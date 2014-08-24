@@ -3,6 +3,7 @@ package net.mymilkedeek.ludum.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import net.mymilkedeek.ludum.io.LevelLoader;
 import net.mymilkedeek.ludum.model.Level;
@@ -35,21 +36,28 @@ public class GameScreen implements Screen {
         }
 
         if ( completed ) {
-            Level newCurrentLevel;
-            try {
-                newCurrentLevel = LevelLoader.loadLevel(currentLevel.getLevelNumber() + 1);
-            } catch (GdxRuntimeException e) {
-                newCurrentLevel = null;
-            }
+            // display menu
+            currentLevel.displayNextLevelMenu();
 
-            if ( newCurrentLevel == null ) {
-                currentLevel.dispose();
-                currentLevel = null;
-                System.out.println("Hooray!");
-                Gdx.app.exit();
-            } else {
-                // display menu
-                currentLevel = newCurrentLevel;
+            if ( currentLevel.isNextLevel() ) {
+                Level newCurrentLevel;
+                try {
+                    newCurrentLevel = LevelLoader.loadLevel(currentLevel.getLevelNumber() + 1);
+                } catch (GdxRuntimeException e) {
+                    newCurrentLevel = null;
+                }
+
+                if (newCurrentLevel == null) {
+                    //TODO end of game
+                    currentLevel.dispose();
+                    currentLevel = null;
+                    System.out.println("Hooray!");
+                    Gdx.app.exit();
+                } else {
+                    currentLevel = newCurrentLevel;
+                }
+            } else if ( currentLevel.isMainMenu()) {
+                // TODO set to main menu
             }
         }
     }
