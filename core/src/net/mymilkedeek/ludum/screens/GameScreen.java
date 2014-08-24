@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import net.mymilkedeek.ludum.io.LevelLoader;
+import net.mymilkedeek.ludum.io.Progress;
 import net.mymilkedeek.ludum.model.Level;
 import net.mymilkedeek.ludum.model.World;
 
@@ -50,7 +51,9 @@ public class GameScreen implements Screen {
             // display menu
             currentLevel.displayNextLevelMenu();
 
+
             if ( currentLevel.isNextLevel() ) {
+                Progress.save(currentLevel.getLevelNumber());
                 Level newCurrentLevel;
                 try {
                     newCurrentLevel = LevelLoader.loadLevel(currentLevel.getLevelNumber() + 1);
@@ -62,12 +65,13 @@ public class GameScreen implements Screen {
                     //TODO end of game
                     currentLevel.dispose();
                     currentLevel = null;
-                    System.out.println("Hooray!");
-                    Gdx.app.exit();
+
+                    ((Game)Gdx.app.getApplicationListener()).setScreen(new VictoryScreen());
                 } else {
                     currentLevel = newCurrentLevel;
                 }
             } else if ( currentLevel.isMainMenu()) {
+                Progress.save(currentLevel.getLevelNumber());
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
             }
         }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import net.mymilkedeek.ludum.io.LevelLoader;
+import net.mymilkedeek.ludum.io.Progress;
 
 /**
  * @author MyMilkedEek
@@ -57,7 +58,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // TODO check preferences
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen(1));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(Progress.load() + 1));
             }
         });
         levelSelectButton = new TextButton("Select a Level", uiSkin);

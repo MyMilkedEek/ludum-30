@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import net.mymilkedeek.ludum.io.ImageDictionary;
 import net.mymilkedeek.ludum.listener.WorldInputListener;
 
@@ -35,8 +34,6 @@ public class World extends Actor {
 
     // todo improve rendering
     private ShapeRenderer shapeRenderer;
-    private BitmapFont font;
-
 
     public World(List<String> excesses, List<String> goals) {
         this.excesses = excesses;
@@ -49,7 +46,6 @@ public class World extends Actor {
 
         // todo rendering
         shapeRenderer = new ShapeRenderer();
-        font = new BitmapFont(Gdx.files.internal("font/font.fnt"));
         setColor(Color.BLUE);
 
         inputListener = new WorldInputListener(this);
@@ -109,8 +105,6 @@ public class World extends Actor {
     }
 
     private void renderAvailableResources(Batch batch, ShapeRenderer shapeRenderer) {
-        BitmapFont.TextBounds bounds = font.getBounds(showResourcesString);
-
         /* draw excess */
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.GREEN);
