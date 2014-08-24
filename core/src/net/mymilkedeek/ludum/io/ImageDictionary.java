@@ -27,9 +27,9 @@ public class ImageDictionary {
 
         FileHandle fileHandle = Gdx.files.internal("img");
 
-        for ( String file : fileHandle.file().list() ) {
-            if ( file.endsWith(".png")) {
-                map.put(file.replace(".png", ""), new Texture("img/"+file));
+        for ( FileHandle file : fileHandle.list() ) {
+            if ( file.name().endsWith(".png")) {
+                map.put(file.name().replace(".png", ""), new Texture(file));
             }
         }
     }
