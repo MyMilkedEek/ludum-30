@@ -22,6 +22,7 @@ public class World extends Actor {
     private List<String> bonuses;
     private String showResourcesString = "";
     private WorldInputListener inputListener;
+    private Texture worldImg;
 
     private List<World> connectedWorlds;
 
@@ -64,6 +65,10 @@ public class World extends Actor {
         }
     }
 
+    public void setWorldImg(Texture worldImg) {
+        this.worldImg = worldImg;
+    }
+
     public List<String> getExcesses() {
         return excesses;
     }
@@ -79,12 +84,13 @@ public class World extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+        batch.draw(worldImg, getX(), getY());
         batch.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        /*shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(getColor());
         shapeRenderer.circle(getX() + radius, getY() + radius, radius);
-        shapeRenderer.end();
+        shapeRenderer.end();*/
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
@@ -151,7 +157,7 @@ public class World extends Actor {
 
         if ( !(bonuses.size() == 1 && bonuses.get(0).equalsIgnoreCase("empty"))) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(Color.BLUE);
+            shapeRenderer.setColor(Color.OLIVE);
             shapeRenderer.rect(getX() + radius * 2, (float) (getY() + (radius * 0.33)), (bonuses.size() * 32) + (bonuses.size() * 3), 34);
             shapeRenderer.end();
 

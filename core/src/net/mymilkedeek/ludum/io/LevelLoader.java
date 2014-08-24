@@ -2,11 +2,13 @@ package net.mymilkedeek.ludum.io;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import net.mymilkedeek.ludum.model.Level;
 import net.mymilkedeek.ludum.model.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 /**
@@ -62,6 +64,8 @@ public class LevelLoader {
                     Float.valueOf(coordsTokenizer.nextToken()),
                     Float.valueOf(coordsTokenizer.nextToken()),
                     Float.valueOf(coordsTokenizer.nextToken()));
+
+            world.setWorldImg(new Texture("world/" + (new Random().nextInt(10)+1) + ".png"));
 
             worlds.add(world);
         }
