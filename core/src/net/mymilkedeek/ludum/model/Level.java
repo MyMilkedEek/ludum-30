@@ -1,5 +1,6 @@
 package net.mymilkedeek.ludum.model;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import net.mymilkedeek.ludum.screens.GameScreen;
 
 import java.util.List;
 
@@ -26,11 +28,12 @@ public class Level {
     private int levelNumber;
     private TextButton nextButton;
     private TextButton mainButton;
+    private TextButton resetButton;
     private ShapeRenderer renderer;
     private boolean nextLevel;
     private boolean mainMenu = false;
 
-    public Level(int levelNumber, List<World> worlds, Table table) {
+    public Level(final int levelNumber, List<World> worlds, Table table) {
         this.worldList = worlds;
         this.levelNumber = levelNumber;
         nextLevel = false;
@@ -71,9 +74,19 @@ public class Level {
             if ( levelNumber == 2 ) {
                 height -= 50f;
             }
-            table.setBounds(Gdx.graphics.getWidth()*0.2f, height, Gdx.graphics.getWidth()*0.2f * 3, Gdx.graphics.getHeight() * 0.8f / 4);
+            table.setBounds(Gdx.graphics.getWidth() * 0.2f, height, Gdx.graphics.getWidth() * 0.2f * 3, Gdx.graphics.getHeight() * 0.8f / 4);
             stage.addActor(table);
         }
+
+        resetButton = new TextButton("Restart Level", uiSkin);
+        resetButton.setBounds(0,0,100,30);
+        resetButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new GameScreen(levelNumber));
+            }
+        });
+        stage.addActor(resetButton);
 
         Gdx.input.setInputProcessor(stage);
 

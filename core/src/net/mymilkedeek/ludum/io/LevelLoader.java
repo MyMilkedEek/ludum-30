@@ -117,6 +117,16 @@ public class LevelLoader {
             Label label = new Label("Not all worlds are happy. The task of a higher being isn't always easy...", uiSkin);
             label.setWrap(true);
             table.add(label).width(((float)Gdx.graphics.getWidth())*0.8f);
+        } else if ( levelNumber == 4 ) {
+            Skin uiSkin = new Skin(Gdx.files.internal("font/uiskin.json"));
+            table = new Table(uiSkin);
+            Label label = new Label("Connections are unidirectional. Think before you act.", uiSkin);
+            label.setWrap(true);
+            table.add(label).width(((float)Gdx.graphics.getWidth())*0.8f);
+            table.row();
+            label = new Label("Or act wildly and use the restart level functionality.", uiSkin);
+            label.setWrap(true);
+            table.add(label).width(((float)Gdx.graphics.getWidth())*0.8f);
         } else if ( levelNumber == 5 ) {
             Skin uiSkin = new Skin(Gdx.files.internal("font/uiskin.json"));
             table = new Table(uiSkin);
