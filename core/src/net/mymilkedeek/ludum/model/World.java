@@ -147,12 +147,13 @@ public class World extends Actor {
                 }
             }
         } else {
-            connectedWorlds.remove(otherworld);
-            otherworld.connectedWorlds.remove(this);
+            boolean removed = connectedWorlds.remove(otherworld);
 
-            for (String excess : excesses) {
-                if (ResourceProcessor.removeResource(excess, otherworld)) {
-                    rebuildVisualString();
+            if ( removed ) {
+                for (String excess : excesses) {
+                    if (ResourceProcessor.removeResource(excess, otherworld)) {
+                        rebuildVisualString();
+                    }
                 }
             }
         }
