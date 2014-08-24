@@ -31,7 +31,7 @@ public class ResourceProcessor {
         }
 
 
-        return null;
+        return resource;
     }
 
     public static boolean removeResource(String toRemoveResource, World worldToRemoveResourceFrom) {
