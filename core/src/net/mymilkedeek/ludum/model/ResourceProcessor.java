@@ -25,6 +25,14 @@ public class ResourceProcessor {
         for ( String excess : worldToAddResourceTo.getExcesses() ) {
             String output = resourceDictionary.getProperty(resource+"."+excess);
 
+            if ( output != null && !worldToAddResourceTo.getBonuses().contains(output) ) {
+                return output;
+            }
+        }
+
+        for ( String excess : worldToAddResourceTo.getBonuses() ) {
+            String output = resourceDictionary.getProperty(resource+"."+excess);
+
             if ( output != null ) {
                 return output;
             }

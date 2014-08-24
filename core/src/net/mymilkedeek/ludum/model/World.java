@@ -185,8 +185,6 @@ public class World extends Actor {
 
                 if (addResource != null) {
                     otherworld.getBonuses().add(addResource);
-                    rebuildVisualString();
-                    otherworld.rebuildVisualString();
                 }
             }
 
@@ -194,10 +192,16 @@ public class World extends Actor {
                 String addResource = ResourceProcessor.addResource(bonus, otherworld);
 
                 if (addResource != null) {
-                    otherworld.getBonuses().add(bonus);
+                    if (!bonus.equalsIgnoreCase(addResource)) {
+                        otherworld.getBonuses().add(bonus);
+                    }
                     otherworld.getBonuses().add(addResource);
-                    rebuildVisualString();
-                    otherworld.rebuildVisualString();
+
+                    addResource = ResourceProcessor.addResource(bonus, otherworld);
+
+                    if (addResource != null && !otherworld.getBonuses().contains(addResource)) {
+                        otherworld.getBonuses().add(addResource);
+                    }
                 }
             }
         } else {
@@ -214,7 +218,7 @@ public class World extends Actor {
     }
 
     public void rebuildVisualString() {
-        showResourcesString = "";
+        /*showResourcesString = "";
 
         if ( goals == null ) {
             goals = new ArrayList<String>();
@@ -236,7 +240,7 @@ public class World extends Actor {
         }
         for (String b : bonuses) {
             showResourcesString += "*" + b + " ";
-        }
+        }*/
     }
 
     public boolean planetCompleted() {
