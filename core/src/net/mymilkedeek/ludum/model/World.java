@@ -132,7 +132,7 @@ public class World extends Actor {
         if ( !(goals.size() == 1 && goals.get(0).equalsIgnoreCase("empty"))) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(Color.ORANGE);
-            shapeRenderer.rect(getX() + radius, (float) (getY() - (radius * 1.50)), (goals.size() * 32) + (excesses.size() * 3), 34);
+            shapeRenderer.rect(getX() + radius, (float) (getY() - (radius * 1.50)), (goals.size() * 32) + (goals.size() * 3), 34);
             shapeRenderer.end();
 
             batch.begin();
@@ -141,6 +141,26 @@ public class World extends Actor {
                 Texture img = ImageDictionary.getImage(goal);
                 if (img != null) {
                     batch.draw(img, getX() + (radius * (goals.indexOf(goal) + 1)), (float) (getY() - (radius * 1.5)) - 1);
+                }
+            }
+
+            batch.end();
+        }
+
+        /* draw boni */
+
+        if ( !(bonuses.size() == 1 && bonuses.get(0).equalsIgnoreCase("empty"))) {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(Color.BLUE);
+            shapeRenderer.rect(getX() + radius * 2, (float) (getY() + (radius * 0.33)), (bonuses.size() * 32) + (bonuses.size() * 3), 34);
+            shapeRenderer.end();
+
+            batch.begin();
+
+            for (String bonus : bonuses) {
+                Texture img = ImageDictionary.getImage(bonus);
+                if (img != null) {
+                    batch.draw(img, getX() + radius * 2 + (32 * (bonuses.indexOf(bonus))), (float) (getY() + (radius * 0.33)) - 1);
                 }
             }
 
