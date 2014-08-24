@@ -117,6 +117,12 @@ public class LevelLoader {
             Label label = new Label("Not all worlds are happy. The task of a higher being isn't always easy...", uiSkin);
             label.setWrap(true);
             table.add(label).width(((float)Gdx.graphics.getWidth())*0.8f);
+        } else if ( levelNumber == 5 ) {
+            Skin uiSkin = new Skin(Gdx.files.internal("font/uiskin.json"));
+            table = new Table(uiSkin);
+            Label label = new Label("You can also transfer transferred products. Try chaining planets.", uiSkin);
+            label.setWrap(true);
+            table.add(label).width(((float)Gdx.graphics.getWidth())*0.8f);
         }
 
         Level level = new Level(levelNumber, worlds, table);

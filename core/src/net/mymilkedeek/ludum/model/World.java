@@ -86,6 +86,9 @@ public class World extends Actor {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
+
         for (World otherWorld : connectedWorlds) {
             shapeRenderer.line(getX() + radius, getY() + radius, otherWorld.getX() + otherWorld.radius, otherWorld.getY() + otherWorld.radius);
         }
@@ -181,6 +184,17 @@ public class World extends Actor {
                 String addResource = ResourceProcessor.addResource(excess, otherworld);
 
                 if (addResource != null) {
+                    otherworld.getBonuses().add(addResource);
+                    rebuildVisualString();
+                    otherworld.rebuildVisualString();
+                }
+            }
+
+            for ( String bonus : bonuses ) {
+                String addResource = ResourceProcessor.addResource(bonus, otherworld);
+
+                if (addResource != null) {
+                    otherworld.getBonuses().add(bonus);
                     otherworld.getBonuses().add(addResource);
                     rebuildVisualString();
                     otherworld.rebuildVisualString();
