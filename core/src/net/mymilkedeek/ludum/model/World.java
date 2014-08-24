@@ -2,10 +2,12 @@ package net.mymilkedeek.ludum.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import net.mymilkedeek.ludum.io.ImageDictionary;
 import net.mymilkedeek.ludum.listener.WorldInputListener;
 
 import java.util.ArrayList;
@@ -109,17 +111,41 @@ public class World extends Actor {
     private void renderAvailableResources(Batch batch, ShapeRenderer shapeRenderer) {
         BitmapFont.TextBounds bounds = font.getBounds(showResourcesString);
 
+        /* draw excess */
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.GRAY);
-        shapeRenderer.rect(getX() + radius, (float) (getY() + radius + (radius * 1.25)), bounds.width, bounds.height + 2);
+        shapeRenderer.setColor(Color.GREEN);
+        shapeRenderer.rect(getX() + radius, (float) (getY() + radius + (radius * 1.25)), ( excesses.size() * 32 ) + (excesses.size() * 3), 34);
         shapeRenderer.end();
 
         batch.begin();
 
-        font.setColor(Color.WHITE);
-        font.draw(batch, showResourcesString, getX() + radius, (float) (getY() + radius + (radius * 1.25) + bounds.height));
+        for ( String excess : excesses ) {
+            Texture img = ImageDictionary.getImage(excess);
+            if ( img != null ) {
+                batch.draw(img, getX() + ( radius * ( excesses.indexOf(excess) + 1 )) , (float) (getY() + radius + (radius * 1.25)) + 1);
+            }
+        }
 
         batch.end();
+
+        /* draw goals */
+        if ( !(goals.size() == 1 && goals.get(0).equalsIgnoreCase("empty"))) {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(Color.ORANGE);
+            shapeRenderer.rect(getX() + radius, (float) (getY() - (radius * 1.50)), (goals.size() * 32) + (excesses.size() * 3), 34);
+            shapeRenderer.end();
+
+            batch.begin();
+
+            for (String goal : goals) {
+                Texture img = ImageDictionary.getImage(goal);
+                if (img != null) {
+                    batch.draw(img, getX() + (radius * (goals.indexOf(goal) + 1)), (float) (getY() - (radius * 1.5)) - 1);
+                }
+            }
+
+            batch.end();
+        }
     }
 
     public void setLocation(float x, float y, float radius) {

@@ -72,11 +72,6 @@ public class Level {
     public void render(float delta) {
         stage.act(delta);
         stage.draw();
-
-        /*renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.setColor(Color.ORANGE);
-        renderer.rect(nextButton.getX(), nextButton.getY(), nextButton.getWidth(), nextButton.getHeight());
-        renderer.end();*/
     }
 
     public List<World> getWorlds() {
