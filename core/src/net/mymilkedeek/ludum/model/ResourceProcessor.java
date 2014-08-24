@@ -1,16 +1,35 @@
 package net.mymilkedeek.ludum.model;
 
+import com.badlogic.gdx.Gdx;
+
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  * @author MyMilkedEek
  */
 public class ResourceProcessor {
 
+    private static Properties resourceDictionary;
+
     public static String addResource(String resource, World worldToAddResourceTo) {
-        if ( resource.equalsIgnoreCase("food") ) {
-            if ( worldToAddResourceTo.getExcesses().contains("food")) {
-                return "gluttony";
+        if ( resourceDictionary == null ) {
+            resourceDictionary = new Properties();
+            try {
+                resourceDictionary.load(Gdx.files.internal("data/resources.properties").reader());
+            } catch (IOException e) {
+                e.printStackTrace(); // uhh yeah critical error and stuff
             }
         }
+
+        for ( String excess : worldToAddResourceTo.getExcesses() ) {
+            String output = resourceDictionary.getProperty(resource+"."+excess);
+
+            if ( output != null ) {
+                return output;
+            }
+        }
+
 
         return null;
     }

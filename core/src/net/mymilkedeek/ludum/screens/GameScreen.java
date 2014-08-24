@@ -3,6 +3,7 @@ package net.mymilkedeek.ludum.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import net.mymilkedeek.ludum.io.LevelLoader;
 import net.mymilkedeek.ludum.model.Level;
 import net.mymilkedeek.ludum.model.World;
@@ -34,7 +35,12 @@ public class GameScreen implements Screen {
         }
 
         if ( completed ) {
-            Level newCurrentLevel = LevelLoader.loadLevel(currentLevel.getLevelNumber() + 1);
+            Level newCurrentLevel;
+            try {
+                newCurrentLevel = LevelLoader.loadLevel(currentLevel.getLevelNumber() + 1);
+            } catch (GdxRuntimeException e) {
+                newCurrentLevel = null;
+            }
 
             if ( newCurrentLevel == null ) {
                 currentLevel.dispose();

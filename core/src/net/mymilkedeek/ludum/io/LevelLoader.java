@@ -47,8 +47,11 @@ public class LevelLoader {
             List<String> goals = new ArrayList<String>();
             StringTokenizer goalsTokenizer = new StringTokenizer(planetTokenizer.nextToken(), ":", false);
 
-            while ( goalsTokenizer .hasMoreElements()) {
-                goals.add(goalsTokenizer .nextToken());
+            while ( goalsTokenizer.hasMoreElements()) {
+                String goal = goalsTokenizer.nextToken();
+                if ( goal != "empty" ) {
+                    goals.add(goal);
+                }
             }
 
             World world = new World(excess, goals);

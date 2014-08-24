@@ -161,6 +161,17 @@ public class World extends Actor {
     public void rebuildVisualString() {
         showResourcesString = "";
 
+        if ( goals == null ) {
+            goals = new ArrayList<String>();
+        }
+
+        for ( String g : goals ) {
+            if ( g.equalsIgnoreCase("empty")) {
+                continue;
+            }
+            showResourcesString += "g" + g + " ";
+        }
+
         for (String s : excesses) {
             showResourcesString += "+" + s + " ";
         }
@@ -177,6 +188,11 @@ public class World extends Actor {
         if ( bonuses == null ) {
             bonuses = new ArrayList<String>();
         }
+
+        if ( goals.size() == 1 && goals.get(0).equalsIgnoreCase("empty") ) {
+            return true;
+        }
+
         return bonuses.containsAll(goals);
     }
 
