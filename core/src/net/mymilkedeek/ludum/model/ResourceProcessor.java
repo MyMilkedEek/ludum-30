@@ -10,6 +10,9 @@ import java.util.Properties;
  */
 public class ResourceProcessor {
 
+    /**
+     *
+     */
     private static Properties resourceDictionary;
 
     public static String addResource(String resource, World worldToAddResourceTo) {
@@ -18,7 +21,9 @@ public class ResourceProcessor {
             try {
                 resourceDictionary.load(Gdx.files.internal("data/resources.properties").reader());
             } catch (IOException e) {
-                e.printStackTrace(); // uhh yeah critical error and stuff
+                // uhh yeah critical error and stuff
+                Gdx.app.log("MMESPACE", "Critical error loading resources.");
+                Gdx.app.exit();
             }
         }
 
