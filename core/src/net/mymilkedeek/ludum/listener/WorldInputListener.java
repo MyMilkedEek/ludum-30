@@ -1,30 +1,51 @@
 package net.mymilkedeek.ludum.listener;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.utils.Array;
 import net.mymilkedeek.ludum.model.World;
 
 /**
+ * InputListener for dragging events on world instances.
+ * Keeps track of the current position of the dragging
+ * finger to draw the line and connects worlds if necessary.
+ *
  * @author MyMilkedEek
  */
 public class WorldInputListener extends InputListener {
 
-    private final World world;
-    private boolean dragging = false;
-    private Vector2 lastDraggedPosition;
+    /**
+     * The world instance this listener is monitoring.
+     */
+    private final transient World world;
 
+    /**
+     * Flag to indicate if the user is dragging his finger
+     * starting from this world.
+     */
+    private transient boolean dragging;
+
+    /**
+     * The last known position of the dragging finger.
+     */
+    private final transient Vector2 lastDraggedPosition;
+
+    /**
+     * Default constructor for the listener.
+     * Sets the wold it is going to monitor.
+     *
+     * @param world owner
+     */
     public WorldInputListener(World world) {
+        super();
         this.world = world;
-        lastDraggedPosition = new Vector2();
+        this.lastDraggedPosition = new Vector2();
     }
 
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        if ( world.needsClick()) {
-            world.getBonuses().add("click");
+        if (this.world.needsClick()) {
+            this.world.getBonuses().add("click");
         }
         return true;
     }
@@ -33,45 +54,54 @@ public class WorldInputListener extends InputListener {
     public void touchDragged(InputEvent event, float x, float y, int pointer) {
         super.touchDragged(event, x, y, pointer);
 
-        if ( !dragging ) {
-            dragging = true;
+        if (! this.dragging) {
+            this.dragging = true;
         }
 
-        x += world.getX();
-        y += world.getY();
+        x += this.world.getX();
+        y += this.world.getY();
 
-        lastDraggedPosition.x = x;
-        lastDraggedPosition.y = y;
+        this.lastDraggedPosition.x = x;
+        this.lastDraggedPosition.y = y;
     }
 
     @Override
-    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+    public void touchUp(final InputEvent event, final float x, final float y, final int pointer, final int button) {
         super.touchUp(event, x, y, pointer, button);
 
-        Stage stage = event.getStage();
-        Array<Actor> actors = stage.getActors();
+        final Stage stage = event.getStage();
+        final Array<Actor> actors = stage.getActors();
 
-        x += world.getX();
-        y += world.getY();
+        final float localX = x + this.world.getX();
+        final float localY = y + this.world.getY();
 
-        for ( Actor actor : actors ) {
-            if ( actor != world && actor instanceof World) {
-                if ( x > actor.getX() && x < actor.getX() + actor.getWidth() ) {
-                    if ( y > actor.getY() && y < actor.getY() + actor.getHeight() ) {
-                        world.connect((World)actor);
-                    }
-                }
+        for (final Actor actor : actors) {
+            if (actor != this.world && actor instanceof World
+                    && localX > actor.getX() && localX < actor.getX() + actor.getWidth()
+                    && localY > actor.getY() && localY < actor.getY() + actor.getHeight()) {
+                this.world.connect((World) actor);
+
             }
         }
 
-        dragging = false;
+        this.dragging = false;
     }
 
+    /**
+     * Is the user dragging a line?
+     *
+     * @return dragging
+     */
     public boolean isDragging() {
-        return dragging;
+        return this.dragging;
     }
 
+    /**
+     * Returns the last known dragging position.
+     *
+     * @return Vector2
+     */
     public Vector2 getLastDraggedPosition() {
-        return lastDraggedPosition;
+        return this.lastDraggedPosition;
     }
 }

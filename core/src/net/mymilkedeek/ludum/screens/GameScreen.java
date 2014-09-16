@@ -2,7 +2,7 @@ package net.mymilkedeek.ludum.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,103 +13,108 @@ import net.mymilkedeek.ludum.model.Level;
 import net.mymilkedeek.ludum.model.World;
 
 /**
+ * This is the screen that contains the game loop and checks.
+ *
+ * It checks if the victory condition per level has been reached
+ * and sets the new level accordingly.
+ *
+ * If the victory condition has been reached,
+ * set the victory screen as the current screen.
+ *
  * @author MyMilkedEek
  */
-public class GameScreen implements Screen {
+public class GameScreen extends ScreenAdapter {
 
-    private Level currentLevel;
+    /**
+     * The current level.
+     */
+    private transient Level currentLevel;
+
+    /**
+     * The drawn background.
+     */
     private Texture background;
+
+    /**
+     * The batch object to draw stuff to the screen!
+     */
     private SpriteBatch batch;
-    private int startLevel;
 
+    /**
+     * Starting level for this player.
+     */
+    private final int startLevel;
 
+    /**
+     * Default constructor for the GameScreen.
+     *
+     * @param level starting level of the game.
+     */
     public GameScreen(int level) {
-        startLevel = level;
+        this.startLevel = level;
     }
 
     @Override
-    public void render(float delta) {
+    public final void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
-        batch.draw(background, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.end();
+        this.batch.begin();
+        this.batch.draw(background, 0, 0,
+                Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.batch.end();
 
-        currentLevel.render(delta);
+        this.currentLevel.render(delta);
 
         boolean completed = true;
 
-        for ( World world : currentLevel.getWorlds() ) {
-            if ( !world.planetCompleted() ) {
+        for (final World world : this.currentLevel.getWorlds()) {
+            // loop over the worlds to find out if every world
+            // is balanced or not
+            if (! world.planetCompleted()) {
                 completed = false;
                 break;
             }
         }
 
-        if ( completed ) {
+        if (completed) {
             // display menu
-            currentLevel.displayNextLevelMenu();
+            this.currentLevel.displayNextLevelMenu();
 
-
-            if ( currentLevel.isNextLevel() ) {
-                Progress.save(currentLevel.getLevelNumber());
-                Level newCurrentLevel;
+            if (this.currentLevel.isNextLevel()) {
+                // save the progress
+                Progress.save(this.currentLevel.getLevelNumber());
                 try {
-                    newCurrentLevel = LevelLoader.loadLevel(currentLevel.getLevelNumber() + 1);
+                    currentLevel = LevelLoader.loadLevel(
+                            currentLevel.getLevelNumber() + 1
+                    );
                 } catch (GdxRuntimeException e) {
-                    newCurrentLevel = null;
-                }
+                    // end of game is reached
+                    Gdx.app.log("MMESPACE", "End of game!");
+                    this.currentLevel.dispose();
 
-                if (newCurrentLevel == null) {
-                    //TODO end of game
-                    currentLevel.dispose();
-                    currentLevel = null;
-
-                    ((Game)Gdx.app.getApplicationListener()).setScreen(new VictoryScreen());
-                } else {
-                    currentLevel = newCurrentLevel;
+                    ((Game) Gdx.app.getApplicationListener())
+                            .setScreen(new VictoryScreen());
                 }
-            } else if ( currentLevel.isMainMenu()) {
-                Progress.save(currentLevel.getLevelNumber());
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
+            } else if (this.currentLevel.isMainMenu()) {
+                Progress.save(this.currentLevel.getLevelNumber());
+                ((Game) Gdx.app.getApplicationListener())
+                        .setScreen(new MainMenuScreen());
             }
         }
     }
 
     @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void show() {
-        if ( currentLevel == null ) {
-            currentLevel = LevelLoader.loadLevel(startLevel);
+    public final void show() {
+        if (this.currentLevel == null) {
+            this.currentLevel = LevelLoader.loadLevel(startLevel);
         }
 
-        background = new Texture("world/background.png");
-        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        batch = new SpriteBatch();
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void dispose() {
-
+        this.background = new Texture("world/background.png");
+        // repeat the background horizontally and vertically
+        this.background.setWrap(
+                Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat
+        );
+        this.batch = new SpriteBatch();
     }
 }
