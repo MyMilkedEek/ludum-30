@@ -79,7 +79,7 @@ public class Level {
             this.stage.addActor(world);
         }
 
-        Skin uiSkin = new Skin(Gdx.files.internal("font/uiskin.json"));
+        final Skin uiSkin = new Skin(Gdx.files.internal("font/uiskin.json"));
 
         this.nextButton = new TextButton("Next Level", uiSkin);
         this.nextButton.setVisible(false);

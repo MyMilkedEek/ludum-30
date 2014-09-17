@@ -10,40 +10,62 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import net.mymilkedeek.ludum.io.Progress;
 
 /**
+ * Screen that shows a victory message!
+ *
  * @author MyMilkedEek
  */
 public class VictoryScreen extends ScreenAdapter {
+
+    /**
+     * The background graphic.
+     */
     private Texture background;
+
+    /**
+     * The foreground graphic.
+     */
     private Texture foreground;
+
+    /**
+     * The batch to draw everything
+     */
     private SpriteBatch batch;
+
+    /**
+     * Coordinate of foreground
+     */
     private float foreX;
+
+    /**
+     * Coordinate of foreground
+     */
     private float foreY;
 
     @Override
-    public void render(float delta) {
+    public final void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         this.batch.begin();
-        this.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.batch.draw(foreground, foreX, foreY, foreground.getWidth(), foreground.getHeight());
+        this.batch.draw(this.background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.batch.draw(this.foreground, this.foreX, this.foreY, this.foreground.getWidth(), this.foreground.getHeight());
         this.batch.end();
     }
 
     @Override
-    public void show() {
+    public final void show() {
         Progress.save(0);
         this.background = new Texture("world/background.png");
         this.foreground = new Texture("splash/victory.png");
-        this.foreX = (Gdx.graphics.getWidth() / 2) - ( foreground.getWidth() / 2);
-        this.foreY = (Gdx.graphics.getHeight() / 2) - ( foreground.getHeight() / 2);
+        this.foreX = (Gdx.graphics.getWidth() / 2) - ( this.foreground.getWidth() / 2);
+        this.foreY = (Gdx.graphics.getHeight() / 2) - ( this.foreground.getHeight() / 2);
 
         this.background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         this.batch = new SpriteBatch();
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            public boolean touchDown(final int screenX, final int screenY, final int pointer, final int button) {
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
                 return true;
             }
